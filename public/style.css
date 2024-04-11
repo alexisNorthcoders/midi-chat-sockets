@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
 .key {
     display: inline-block;
     width: 20px;

@@ -1,6 +1,6 @@
 import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
 
-const socket = io("http://192.168.4.136:3000");
+const socket = io("http://192.168.4.29:3000");
 //Oscilator 
 
 const context = new AudioContext();

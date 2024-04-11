@@ -9,7 +9,7 @@ const app = express();
 const server = http.createServer(app);
 
 const whitelist = [
-  "http://192.168.4.136:3000",
+  "http://192.168.4.29:3000",
   "http://127.0.0.1:3000",
   "http://localhost:3000",
   "https://admin.socket.io",
@@ -27,7 +27,7 @@ const corsOptions = {
 };
 app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
-app.use("/howler", express.static(path.join(__dirname, "node_modules/howler/dist")));
+
 const userMap = new Map();
 const io = socketIo(server, {
   cors: corsOptions,
