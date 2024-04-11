@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+.key {
+    display: inline-block;
+    width: 20px;
+    height: 80px;
+    margin: 2px;
+    background-color: #fff;
+    border: 1px solid #000;
+  }
+  .key.active {
+    background-color: rgb(255, 0, 0);
+  }
+
+
+#message-container div {
+    background-color: #dadada;
+    padding: 5px;
+  }
+
+  #message-container div:nth-child(2n) {
+    background-color: #FFF;
+  }
