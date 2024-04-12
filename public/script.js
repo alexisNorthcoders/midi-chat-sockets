@@ -1,53 +1,16 @@
 import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
 
 const socket = io("http://192.168.4.29:3000");
-//Oscilator
 
-const context = new AudioContext();
-const oscillators = {};
-let midi, data;
-let isMouseDown = false
 
-function frequency(note) {
-  return Math.pow(2, (note - 69) / 12) * 440;
-}
-function playNote(data) {
-  switch (data.on) {
-    case 144:
-      noteOn(frequency(data.pitch), data.velocity);
-      break;
-    case 128:
-      noteOff(frequency(data.pitch), data.velocity);
-      break;
-  }
-
-  function noteOn(frequency, velocity) {
-    const vol = (velocity / 127).toFixed(2);
-
-    const osc = (oscillators[frequency] = context.createOscillator());
-    osc.type = "sawtooth";
-    osc.frequency.value = frequency;
-    osc.setVolume = vol;
-    osc.connect(context.destination);
-    osc.start(context.currentTime);
-  }
-
-  function noteOff(frequency, velocity) {
-    if (oscillators[frequency]) {
-      oscillators[frequency].stop(context.currentTime);
-      oscillators[frequency].disconnect();
-      delete oscillators[frequency]; 
-    }
-  }
-}
-
+const piano = new Piano()
 // DOM elements
 const messageContainer = document.getElementById("message-container");
 const messageForm = document.getElementById("form");
 const messageInput = document.getElementById("message-input");
 const joinRoomButton = document.getElementById("room-button");
 const roomInput = document.getElementById("room-input");
-const pianoKeys = document.querySelectorAll(".piano-key");
+
 
 // Chat sockets
 
@@ -83,71 +46,39 @@ socket.on("midiMessage", (data) => {
   visualizeKey(data.note, data.velocity);
 });
 
-// Audio
+// Piano
+
+
 
 // Event Listeners
-document.addEventListener('mouseup', () => {
-  isMouseDown = false; 
+document.addEventListener('keydown', (event) => {
+  const key = event.key.toUpperCase(); // Convert the pressed key to uppercase
+  const keyIndex = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K'].indexOf(key); // Map the pressed key to an index (0-7)
+  if (keyIndex !== -1) {
+    const noteIndex = keyIndex + 3; // Offset the index to match notes C to C+
+    const note = String.fromCharCode(67 + noteIndex); // Convert the index back to a note (C to C+)
+    const pitch = convertNoteToMIDI(note);
+    playNote({ on: 144, pitch, velocity: 127 });
+    // Add 'active' class to the corresponding key
+    pianoKeys[noteIndex].classList.add('active');
+  }
 });
 
-pianoKeys.forEach(key => {
-  key.addEventListener('mousedown', () => {
-    isMouseDown = true
-    key.classList.add('active')
-    const note = key.id; 
-    const pitch = convertNoteToMIDI(note); 
-    playNote({ on: 144, pitch, velocity: 127 });
-  });
-
-
-  key.addEventListener('mouseup', () => {
-    isMouseDown = false
-    const note = key.id; 
-    const pitch = convertNoteToMIDI(note); 
+document.addEventListener('keyup', (event) => {
+  const key = event.key.toUpperCase(); // Convert the released key to uppercase
+  const keyIndex = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K'].indexOf(key); // Map the released key to an index (0-7)
+  if (keyIndex !== -1) {
+    const noteIndex = keyIndex + 3; // Offset the index to match notes C to C+
+    const note = String.fromCharCode(67 + noteIndex); // Convert the index back to a note (C to C+)
+    const pitch = convertNoteToMIDI(note);
     playNote({ on: 128, pitch, velocity: 127 });
-    key.classList.remove('active'); 
-    key.classList.remove('hover-active');
-  });
-  key.addEventListener('mouseleave', () => {
-    key.classList.remove('active');
-    key.classList.remove('hover-active');
-    const note = key.id; 
-    console.log(note)
-    const pitch = convertNoteToMIDI(note); 
-    playNote({ on: 128, pitch, velocity: 127 });
-  });
-  key.addEventListener('contextmenu', e => {
-    e.preventDefault();
-  });
-  key.addEventListener('mouseenter', () => {
-    if (isMouseDown) {
-      key.classList.add('hover-active'); 
-      const note = key.id;
-      const pitch = convertNoteToMIDI(note);
-      playNote({ on: 144, pitch, velocity: 127 });
-    }
-  });
-  key.addEventListener('touchstart', (event) => {
-    event.preventDefault();
-    isMouseDown = true;
-    key.classList.add('active');
-    const note = key.id; 
-    const pitch = convertNoteToMIDI(note); 
-    playNote({ on: 144, pitch, velocity: 127 });
-  });
+    // Remove 'active' class from the corresponding key
+    pianoKeys[noteIndex].classList.remove('active');
+  }
+});
 
-  key.addEventListener('touchend', () => {
-    isMouseDown = false;
-    const note = key.id; 
-    const pitch = convertNoteToMIDI(note); 
-    playNote({ on: 128, pitch, velocity: 127 });
-    key.classList.remove('active'); 
-    key.classList.remove('hover-active');
-  });
 
-  
 
- });
 
 messageForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -196,21 +127,7 @@ function onMIDIMessage(message) {
   playNote(noteToPlay);
 }
 
-function convertNoteToMIDI(note) {
-  const noteMap = {
-    'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3,
-    'E': 4, 'F': 5, 'F#': 6, 'Gb': 6, 'G': 7, 'G#': 8, 'Ab': 8,
-    'A': 9, 'A#': 10, 'Bb': 10, 'B': 11
-  };
-  const octaveInput = 4
-  const octave = note.includes("+") ? octaveInput + 1 : octaveInput
-  
-  const noteIndex = noteMap[note.replace('+', '')]
-  if (!isNaN(octave) && noteIndex !== undefined) {
-    return octave * 12 + noteIndex + 12; 
-  }
-  return NaN;
-}
+
 
 if (navigator.requestMIDIAccess) {
   navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
