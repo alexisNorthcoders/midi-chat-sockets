@@ -8,18 +8,35 @@
     padding: 5px;
   }
 
-  #message-container div:nth-child(2n) {
+#message-container div:nth-child(2n) {
     background-color: #FFF;
   }
 .piano-key {
  user-select: none;
+ height:90vh;
+ width: 12%;
+}
+.sharp{
+  position:absolute;
+  height:30vh;
+  width:6%;
 }
 .hover-active{
   transform: scale(0.95);
 }
 .active{
- 
+    
     transform: scale(0.95);
+}
 
-
+@media screen and (min-width: 768px) {
+  /* If the screen width is 768px or larger (usually tablets and desktops) */
+  .piano-key {
+    width: 12%; /* Adjusted width for larger screens */
+  }
+  .sharp{
+    position:absolute;
+    height:30vh;
+    width:6%;
+  }
 }
