@@ -157,4 +157,4 @@ if (navigator.requestMIDIAccess) {
   console.log("Web MIDI API not supported!");
 }
 
-generateKeyboard();
+//generateKeyboard();

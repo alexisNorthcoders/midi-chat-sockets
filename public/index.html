@@ -11,142 +11,25 @@
   <script type="module"  src="script.js"></script>
   
   </head>
-  <body class="flex flex-row justify-content-center bg-indigo-100">
-    <div id="keyboard" class="w-1/2"></div>
-    <div class="h-screen w-full p-10 flex text-gray-800">
-      <ul class="grid grid-cols-10 gap-2 md:gap-4 xl:gap-10 h-[70vh] my-auto w-full">
-        <li class="h-full flex items-center text-2xl lg:text-4xl font-bold">
-          <div class="h-[100%] w-full">
-            <a id="1" onclick="play(1)" onmouseenter="playOnEnter(1)" class="
-              cursor-pointer shadow-lg hover:shadow-2xl 
-              rounded-2xl bg-opacity-80 hover:bg-opacity-100 
-              flex items-center h-full justify-center bg-red-500">
-              C
-            </a>
-            <p class="mt-2 text-center">
-              1
-            </p>
-          </div>
-        </li>
-        <li class="h-full flex items-center text-2xl lg:text-4xl font-bold">
-          <div class="h-[92%] w-full">
-            <a id="2" onclick="play(2)" onmouseenter="playOnEnter(2)"class="
-              cursor-pointer shadow-lg hover:shadow-2xl 
-              rounded-2xl bg-opacity-80 hover:bg-opacity-100 
-              flex items-center h-full justify-center bg-amber-500">
-              D
-            </a>
-            <p class="mt-2 text-center">
-              2
-            </p>
-          </div>
-        </li>
-        <li class="h-full flex items-center text-2xl lg:text-4xl font-bold">
-          <div class="h-[86%] w-full">
-            <a id="3" onclick="play(3)" onmouseenter="playOnEnter(3)" class="
-              cursor-pointer shadow-lg hover:shadow-2xl 
-              rounded-2xl bg-opacity-80 hover:bg-opacity-100 
-              flex items-center h-full justify-center bg-yellow-400">
-              E
-            </a>
-            <p class="mt-2 text-center">
-              3
-            </p>
-          </div>
-        </li>
-        <li class="h-full flex items-center text-2xl lg:text-4xl font-bold">
-          <div class="h-[78%] w-full">
-            <a id="4" onclick="play(4)" onmouseenter="playOnEnter(4)" class="
-              cursor-pointer shadow-lg hover:shadow-2xl 
-              rounded-2xl bg-opacity-80 hover:bg-opacity-100 
-              flex items-center h-full justify-center bg-lime-500">
-              F
-            </a>
-            <p class="mt-2 text-center">
-              4
-            </p>
-          </div>
-        </li>
-        <li class="h-full flex items-center text-2xl lg:text-4xl font-bold">
-          <div class="h-[70%] w-full">
-            <a id="5" onclick="play(5)" onmouseenter="playOnEnter(5)" class="
-              cursor-pointer shadow-lg hover:shadow-2xl 
-              rounded-2xl bg-opacity-80 hover:bg-opacity-100 
-              flex items-center h-full justify-center bg-teal-500">
-              G
-            </a>
-            <p class="mt-2 text-center">
-              5
-            </p>
-          </div>
-        </li>
-        <li class="h-full flex items-center text-2xl lg:text-4xl font-bold">
-          <div class="h-[62%] w-full">
-            <a id="6" onclick="play(6)" onmouseenter="playOnEnter(6)" class="
-              cursor-pointer shadow-lg hover:shadow-2xl 
-              rounded-2xl bg-opacity-80 hover:bg-opacity-100 
-              flex items-center h-full justify-center bg-sky-500">
-              H
-            </a>
-            <p class="mt-2 text-center">
-              6
-            </p>
-          </div>
-        </li>
-        <li class="h-full flex items-center text-2xl lg:text-4xl font-bold">
-          <div class="h-[54%] w-full">
-            <a id="7" onclick="play(7)" onmouseenter="playOnEnter(7)" class="
-              cursor-pointer shadow-lg hover:shadow-2xl 
-              rounded-2xl bg-opacity-80 hover:bg-opacity-100 
-              flex items-center h-full justify-center bg-purple-500">
-              I
-            </a>
-            <p class="mt-2 text-center">
-              7
-            </p>
-          </div>
-        </li>
-        <li class="h-full flex items-center text-2xl lg:text-4xl font-bold">
-          <div class="h-[44%] w-full">
-            <a id="8" onclick="play(8)" onmouseenter="playOnEnter(8)" class="
-              cursor-pointer shadow-lg hover:shadow-2xl 
-              rounded-2xl bg-opacity-80 hover:bg-opacity-100 
-              flex items-center h-full justify-center bg-red-500">
-              C
-            </a>
-            <p class="mt-2 text-center">
-              8
-            </p>
-          </div>
-        </li>
-        <li class="h-full flex items-center text-2xl lg:text-4xl font-bold">
-          <div class="h-[36%] w-full">
-            <a id="9" onclick="play(9)" onmouseenter="playOnEnter(9)" class="
-              cursor-pointer shadow-lg hover:shadow-2xl 
-              rounded-2xl bg-opacity-80 hover:bg-opacity-100 
-              flex items-center h-full justify-center bg-orange-500">
-              D
-            </a>
-            <p class="mt-2 text-center">
-              9
-            </p>
-          </div>
-        </li>
-        <li class="h-full flex items-center text-2xl lg:text-4xl font-bold">
-          <div class="h-[28%] w-full">
-            <a id="0" onclick="play(0)" onmouseenter="playOnEnter(0)" class="
-              cursor-pointer shadow-lg hover:shadow-2xl 
-              rounded-2xl bg-opacity-80 hover:bg-opacity-100 
-              flex items-center h-full justify-center bg-yellow-400">
-              E
-            </a>
-            <p class="mt-2 text-center">
-              0
-            </p>
-          </div>
-        </li>
-      </ul>
+  <body class="flex flex-row justify-content-center ">
+    <div id="keyboard" class=" w-1/2 flex-row flex gap-1" >
+      
+        <div class="flex items-center text-xl font-bold justify-center text-center w-[80px] h-[400px] hover:shadow-lg bg-red-500 rounded-2xl">C</div>
+        <div class="fixed left-[50px] bg-black w-[40px] h-[150px] rounded-lg "></div>
+        <div class="flex items-center text-xl font-bold justify-center text-center w-[80px] h-[400px] hover:shadow-lg bg-amber-500 rounded-2xl">D</div>
+        <div class="fixed left-[120px] bg-black w-[40px] h-[150px] rounded-lg "></div>
+        <div class="flex items-center text-xl font-bold justify-center text-center w-[80px] h-[400px] hover:shadow-lg bg-orange-500 rounded-2xl">E</div>
+        <div class="fixed left-[250px] bg-black w-[40px] h-[150px] rounded-lg "></div>
+        <div class="flex items-center text-xl font-bold justify-center text-center w-[80px] h-[400px] hover:shadow-lg bg-yellow-500 rounded-2xl">F</div>
+        <div class="fixed left-[320px] bg-black w-[40px] h-[150px] rounded-lg "></div>
+        <div class="flex items-center text-xl font-bold justify-center text-center w-[80px] h-[400px] hover:shadow-lg bg-blue-500 rounded-2xl">G</div>
+        <div class="fixed left-[400px] bg-black w-[40px] h-[150px] rounded-lg "></div>
+        <div class="flex items-center text-xl font-bold justify-center text-center w-[80px] h-[400px] hover:shadow-lg bg-indigo-500 rounded-2xl">A</div>
+        <div class="flex items-center text-xl font-bold justify-center text-center w-[80px] h-[400px] hover:shadow-lg bg-violet-500 rounded-2xl">B</div>
+        <div class="flex items-center text-xl font-bold justify-center text-center w-[80px] h-[400px] hover:shadow-lg bg-red-500 rounded-2xl">C</div>
+     
     </div>
+   
     <div class="flex flex-col h-screen w-1/2">
       <div class="flex flex-col mb-8 h-full mr-4">
         <div
