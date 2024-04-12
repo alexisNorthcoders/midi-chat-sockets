@@ -63,7 +63,7 @@ io.on("connection", (socket) => {
     }
   });
   socket.on("midiMessage", (data) => {
-    console.log(data);
+    
     socket.broadcast.emit("midiMessage", data);
   });
   socket.on("disconnect", () => {

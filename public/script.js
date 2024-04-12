@@ -2,8 +2,9 @@ import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
 
 const socket = io("http://192.168.4.29:3000");
 
-
+// Initialize piano
 const piano = new Piano()
+
 // DOM elements
 const messageContainer = document.getElementById("message-container");
 const messageForm = document.getElementById("form");
@@ -23,8 +24,6 @@ socket.on("connect", () => {
     localStorage.setItem("chat-username", name);
   }
 
-  /*  const names = ["jonny", "ernesto", "mary", "jane", "lulu"];
-  const name = names[Math.floor(Math.random() * 5)]; */
   appendMessage("You joined as " + name);
   socket.emit("new-user", name);
 });
@@ -42,43 +41,13 @@ socket.on("user-disconnected", (name) => {
 });
 
 // MIDI sockets
-socket.on("midiMessage", (data) => {
-  visualizeKey(data.note, data.velocity);
+socket.on("midiMessage", ({on,pitch,velocity}) => {
+  
+  piano.playNote({on,pitch,velocity});
 });
-
-// Piano
-
 
 
 // Event Listeners
-document.addEventListener('keydown', (event) => {
-  const key = event.key.toUpperCase(); // Convert the pressed key to uppercase
-  const keyIndex = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K'].indexOf(key); // Map the pressed key to an index (0-7)
-  if (keyIndex !== -1) {
-    const noteIndex = keyIndex + 3; // Offset the index to match notes C to C+
-    const note = String.fromCharCode(67 + noteIndex); // Convert the index back to a note (C to C+)
-    const pitch = convertNoteToMIDI(note);
-    playNote({ on: 144, pitch, velocity: 127 });
-    // Add 'active' class to the corresponding key
-    pianoKeys[noteIndex].classList.add('active');
-  }
-});
-
-document.addEventListener('keyup', (event) => {
-  const key = event.key.toUpperCase(); // Convert the released key to uppercase
-  const keyIndex = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K'].indexOf(key); // Map the released key to an index (0-7)
-  if (keyIndex !== -1) {
-    const noteIndex = keyIndex + 3; // Offset the index to match notes C to C+
-    const note = String.fromCharCode(67 + noteIndex); // Convert the index back to a note (C to C+)
-    const pitch = convertNoteToMIDI(note);
-    playNote({ on: 128, pitch, velocity: 127 });
-    // Remove 'active' class from the corresponding key
-    pianoKeys[noteIndex].classList.remove('active');
-  }
-});
-
-
-
 
 messageForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -115,19 +84,12 @@ function onMIDIFailure(msg) {
 }
 
 function onMIDIMessage(message) {
-  const [command, note, velocity] = message.data;
-  socket.emit("midiMessage", { command, note, velocity });
-  visualizeKey(note, velocity);
+  const [on, pitch, velocity] = message.data;
+  console.log(pitchToNoteName(pitch,piano.octave))
+  socket.emit("midiMessage", { on, pitch, velocity });
+  piano.playNote({on,pitch,velocity});
 
-  const noteToPlay = {
-    on: command,
-    pitch: note,
-    velocity: velocity,
-  };
-  playNote(noteToPlay);
-}
-
-
+ }
 
 if (navigator.requestMIDIAccess) {
   navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
