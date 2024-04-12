@@ -84,24 +84,48 @@ socket.on("midiMessage", (data) => {
 // Audio
 
 // Event Listeners
+document.addEventListener('mouseup', () => {
+  isMouseDown = false; 
+});
+
 pianoKeys.forEach(key => {
   key.addEventListener('mousedown', () => {
+    isMouseDown = true
+    key.classList.add('active')
     const note = key.id; 
     const pitch = convertNoteToMIDI(note); 
     playNote({ on: 144, pitch, velocity: 127 });
   });
+  key.addEventListener('mouseenter', () => {
+    if (isMouseDown) {
+      key.classList.add('hover-active'); 
+    }
+  });
+
   key.addEventListener('mouseup', () => {
+    isMouseDown = false
+    key.classList.remove('active');
     const note = key.id; 
     const pitch = convertNoteToMIDI(note); 
     playNote({ on: 128, pitch, velocity: 127 });
+    key.classList.remove('active'); 
   });
   key.addEventListener('mouseleave', () => {
+    key.classList.remove('active');
+    key.classList.remove('hover-active');
     const note = key.id; 
     const pitch = convertNoteToMIDI(note); 
     playNote({ on: 128, pitch, velocity: 127 });
   });
   key.addEventListener('contextmenu', e => {
     e.preventDefault();
+  });
+  key.addEventListener('mouseenter', () => {
+    if (isMouseDown) {
+      const note = key.id;
+      const pitch = convertNoteToMIDI(note);
+      playNote({ on: 144, pitch, velocity: 127 });
+    }
   });
 
  });

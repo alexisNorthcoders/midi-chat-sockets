@@ -11,8 +11,15 @@
   #message-container div:nth-child(2n) {
     background-color: #FFF;
   }
-  .piano-key {
+.piano-key {
+ user-select: none;
+}
+.hover-active{
+  transform: scale(0.95);
+}
+.active{
  
-    user-select: none; /* Prevent text selection */
+    transform: scale(0.95);
 
-  }
+
+}
