@@ -12,7 +12,6 @@ function frequency(note) {
   return Math.pow(2, (note - 69) / 12) * 440;
 }
 function playNote(data) {
-  console.log("play note: ", data.pitch);
   switch (data.on) {
     case 144:
       noteOn(frequency(data.pitch), data.velocity);
@@ -34,8 +33,11 @@ function playNote(data) {
   }
 
   function noteOff(frequency, velocity) {
-    oscillators[frequency].stop(context.currentTime);
-    oscillators[frequency].disconnect();
+    if (oscillators[frequency]) {
+      oscillators[frequency].stop(context.currentTime);
+      oscillators[frequency].disconnect();
+      delete oscillators[frequency]; 
+    }
   }
 }
 
@@ -96,24 +98,21 @@ pianoKeys.forEach(key => {
     const pitch = convertNoteToMIDI(note); 
     playNote({ on: 144, pitch, velocity: 127 });
   });
-  key.addEventListener('mouseenter', () => {
-    if (isMouseDown) {
-      key.classList.add('hover-active'); 
-    }
-  });
+
 
   key.addEventListener('mouseup', () => {
     isMouseDown = false
-    key.classList.remove('active');
     const note = key.id; 
     const pitch = convertNoteToMIDI(note); 
     playNote({ on: 128, pitch, velocity: 127 });
     key.classList.remove('active'); 
+    key.classList.remove('hover-active');
   });
   key.addEventListener('mouseleave', () => {
     key.classList.remove('active');
     key.classList.remove('hover-active');
     const note = key.id; 
+    console.log(note)
     const pitch = convertNoteToMIDI(note); 
     playNote({ on: 128, pitch, velocity: 127 });
   });
@@ -122,11 +121,31 @@ pianoKeys.forEach(key => {
   });
   key.addEventListener('mouseenter', () => {
     if (isMouseDown) {
+      key.classList.add('hover-active'); 
       const note = key.id;
       const pitch = convertNoteToMIDI(note);
       playNote({ on: 144, pitch, velocity: 127 });
     }
   });
+  key.addEventListener('touchstart', (event) => {
+    event.preventDefault();
+    isMouseDown = true;
+    key.classList.add('active');
+    const note = key.id; 
+    const pitch = convertNoteToMIDI(note); 
+    playNote({ on: 144, pitch, velocity: 127 });
+  });
+
+  key.addEventListener('touchend', () => {
+    isMouseDown = false;
+    const note = key.id; 
+    const pitch = convertNoteToMIDI(note); 
+    playNote({ on: 128, pitch, velocity: 127 });
+    key.classList.remove('active'); 
+    key.classList.remove('hover-active');
+  });
+
+  
 
  });
 
