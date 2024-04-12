@@ -18,7 +18,7 @@
 }
 .sharp{
   position:absolute;
-  height:30vh;
+  height:40vh;
   width:6%;
 }
 .hover-active{
@@ -29,14 +29,14 @@
     transform: scale(0.95);
 }
 
-@media screen and (min-width: 768px) {
-  /* If the screen width is 768px or larger (usually tablets and desktops) */
+/* @media screen and (min-width: 768px) {
+ 
   .piano-key {
-    width: 12%; /* Adjusted width for larger screens */
+    width: 12%;
   }
   .sharp{
     position:absolute;
     height:30vh;
     width:6%;
   }
-}
+} */
