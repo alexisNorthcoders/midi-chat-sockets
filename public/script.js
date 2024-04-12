@@ -82,6 +82,7 @@ function onMIDIFailure(msg) {
 
 function onMIDIMessage(message) {
   const [on, pitch, velocity] = message.data;
+  console.log(velocity)
   let { note, octave } = pitchToNoteName(pitch, piano.octave);
   if (note === "C" && octave === piano.octave +1){
     note = "C+"
@@ -89,7 +90,7 @@ function onMIDIMessage(message) {
   socket.emit("midiMessage", { on, pitch, velocity });
   if (octave === piano.octave || note === "C+"){
     if (on === 144) {
-      piano.play(note);
+      piano.play(note,velocity);
     } else if (on === 128) {
       piano.stop(note);
     }

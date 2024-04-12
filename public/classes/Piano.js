@@ -18,8 +18,8 @@ class Piano {
     ]);
   }
 
-  playNote({ on, pitch, velocity = 127 }) {
-    console.log(on,pitch,velocity,"inside piano Class")
+  playNote({ on, pitch, velocity }) {
+    
     switch (on) {
       case 144:
         noteOn(frequency(pitch), velocity, this.oscillators, this.context);
@@ -30,16 +30,30 @@ class Piano {
         break;
     }
 
+   
     function noteOn(frequency, velocity, oscillators, context) {
+      const gain = context.createGain(); 
       const vol = (velocity / 127).toFixed(2);
-
-      const osc = (oscillators[frequency] = context.createOscillator());
+  
+     
+      gain.gain.value = vol;
+  
+      const osc = context.createOscillator();
       osc.type = "sawtooth";
       osc.frequency.value = frequency;
-      osc.setVolume = vol;
-      osc.connect(context.destination);
+      
+    
+      osc.connect(gain);
+      
+   
+      gain.connect(context.destination);
+      
+    
       osc.start(context.currentTime);
-    }
+      
+     
+      oscillators[frequency] = osc
+  }
 
     function noteOff(frequency, oscillators, context) {
       if (oscillators[frequency]) {
@@ -128,14 +142,14 @@ class Piano {
       });
     });
   }
-  play(noteName) {
+  play(noteName,velocity) {
     const key = document.getElementById(noteName);
     if (!key) {
       console.error(`Key with id '${noteName}' not found.`);
       return;
     }
     const pitch = convertNoteToMIDI(noteName, this.octave);
-    this.playNote({ on: 144, pitch, velocity: 127 });
+    this.playNote({ on: 144, pitch, velocity });
     key.classList.add("active");
   }
   stop(noteName) {
