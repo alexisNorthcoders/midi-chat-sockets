@@ -3,7 +3,7 @@ import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
 const socket = io("http://192.168.4.29:3000");
 
 // Initialize piano
-const piano = new Piano()
+const piano = new Piano();
 
 // DOM elements
 const messageContainer = document.getElementById("message-container");
@@ -11,7 +11,6 @@ const messageForm = document.getElementById("form");
 const messageInput = document.getElementById("message-input");
 const joinRoomButton = document.getElementById("room-button");
 const roomInput = document.getElementById("room-input");
-
 
 // Chat sockets
 
@@ -41,11 +40,9 @@ socket.on("user-disconnected", (name) => {
 });
 
 // MIDI sockets
-socket.on("midiMessage", ({on,pitch,velocity}) => {
-  
-  piano.playNote({on,pitch,velocity});
+socket.on("midiMessage", ({ on, pitch, velocity }) => {
+  piano.playNote({ on, pitch, velocity });
 });
-
 
 // Event Listeners
 
@@ -85,15 +82,25 @@ function onMIDIFailure(msg) {
 
 function onMIDIMessage(message) {
   const [on, pitch, velocity] = message.data;
-  console.log(pitchToNoteName(pitch,piano.octave))
+  let { note, octave } = pitchToNoteName(pitch, piano.octave);
+  if (note === "C" && octave === piano.octave +1){
+    note = "C+"
+  }
   socket.emit("midiMessage", { on, pitch, velocity });
-  piano.playNote({on,pitch,velocity});
-
- }
-
+  if (octave === piano.octave || note === "C+"){
+    if (on === 144) {
+      piano.play(note);
+    } else if (on === 128) {
+      piano.stop(note);
+    }
+  }
+  else {
+    piano.playNote({on,pitch,velocity})
+  }
+  
+}
 if (navigator.requestMIDIAccess) {
   navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
 } else {
   console.log("Web MIDI API not supported!");
 }
-
