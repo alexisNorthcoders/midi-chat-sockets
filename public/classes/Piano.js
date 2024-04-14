@@ -154,7 +154,7 @@ class Piano {
     }
     this.stop(noteName);
   }
-  playOldMacDonald(musicsheet,tempo=160, interNoteDuration = 'eighth') {
+  playMelody(musicsheet,tempo=160, interNoteDuration = 'eighth') {
     const noteDurations = {
       whole: 4,
       half: 2,
