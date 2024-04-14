@@ -16,6 +16,8 @@ class Piano {
       ["J", "B"],
       ["K", "C+"],
     ]);
+    this.pressedKeys = new Set();
+
   }
 
   playNote({ on, pitch, velocity }) {
@@ -25,44 +27,10 @@ class Piano {
         noteOn(frequency(pitch), velocity, this.oscillators, this.context);
         break;
       case 128:
-        console.log("stopping note")
         noteOff(frequency(pitch), this.oscillators, this.context);
         break;
     }
-
-   
-    function noteOn(frequency, velocity, oscillators, context) {
-      const gain = context.createGain(); 
-      const vol = (velocity / 127).toFixed(2);
-  
-     
-      gain.gain.value = vol;
-  
-      const osc = context.createOscillator();
-      osc.type = "sawtooth";
-      osc.frequency.value = frequency;
-      
-    
-      osc.connect(gain);
-      
-   
-      gain.connect(context.destination);
-      
-    
-      osc.start(context.currentTime);
-      
-     
-      oscillators[frequency] = osc
-  }
-
-    function noteOff(frequency, oscillators, context) {
-      if (oscillators[frequency]) {
-        oscillators[frequency].stop(context.currentTime);
-        oscillators[frequency].disconnect();
-        delete oscillators[frequency];
-      }
-    }
-  }
+}
 
   #setupEventListeners() {
 
@@ -76,13 +44,20 @@ class Piano {
     });
     // Keyboard events
     document.addEventListener('keydown', (event) => {
-      this.playByKeyboard(event.key.toUpperCase())
-       
-     });
-     document.addEventListener('keyup', (event) => {
-       this.stopByKeyboard(event.key.toUpperCase())
-       
-     });
+      const keyPress = event.key.toUpperCase();
+      if (!this.pressedKeys.has(keyPress)) {
+        this.pressedKeys.add(keyPress);
+        this.playByKeyboard(keyPress);
+      }
+    });
+    
+    document.addEventListener('keyup', (event) => {
+      const keyPress = event.key.toUpperCase();
+      if (this.pressedKeys.has(keyPress)) {
+        this.pressedKeys.delete(keyPress);
+        this.stopByKeyboard(keyPress);
+      }
+    });
      // Individual Piano key's events
     this.pianoKeys.forEach((key) => {
       key.addEventListener("mousedown", () => {
@@ -142,13 +117,13 @@ class Piano {
       });
     });
   }
-  play(noteName,velocity) {
+  play(noteName,velocity=127,octave=this.octave) {
     const key = document.getElementById(noteName);
     if (!key) {
       console.error(`Key with id '${noteName}' not found.`);
       return;
     }
-    const pitch = convertNoteToMIDI(noteName, this.octave);
+    const pitch = convertNoteToMIDI(noteName, octave);
     this.playNote({ on: 144, pitch, velocity });
     key.classList.add("active");
   }
@@ -179,4 +154,52 @@ class Piano {
     }
     this.stop(noteName);
   }
+  playOldMacDonald(tempo=160, interNoteDuration = 'eighth') {
+    const noteDurations = {
+      whole: 4,
+      half: 2,
+      quarter: 1,
+      eighth: 0.5,
+      sixteenth: 0.25
+    };
+  
+    const musicsheet = [
+      { note: 'F', duration: 'quarter' },
+      { note: 'F', duration: 'quarter' },
+      { note: 'F', duration: 'quarter' },
+      { note: 'C', duration: 'quarter' },
+      { note: 'D', duration: 'quarter' },
+      { note: 'D', duration: 'quarter' },
+      { note: 'C', duration: 'half' },
+      { note: 'A', duration: 'quarter' },
+      { note: 'A', duration: 'quarter' },
+      { note: 'G', duration: 'quarter' },
+      { note: 'G', duration: 'quarter' },
+      { note: 'F', duration: 'half' },
+     
+    ];
+  
+    const millisecondsPerBeat = 60000 / tempo;
+    const interNoteDurationMilliseconds = millisecondsPerBeat * noteDurations[interNoteDuration];
+    let index = 0;
+  
+    const playNote = (noteName, duration) => {
+      this.play(noteName);
+      setTimeout(() => {
+        this.stop(noteName);
+      }, duration * millisecondsPerBeat);
+    };
+  
+    const playNextNote = () => {
+      const { note, duration } = musicsheet[index];
+      if (note) {
+        playNote(note, noteDurations[duration]);
+        index++;
+        setTimeout(playNextNote, noteDurations[duration] * millisecondsPerBeat + interNoteDurationMilliseconds);
+      }
+    };
+  
+    playNextNote();
+  }
+
 }

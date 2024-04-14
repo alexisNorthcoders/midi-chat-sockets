@@ -11,6 +11,7 @@ const messageForm = document.getElementById("form");
 const messageInput = document.getElementById("message-input");
 const joinRoomButton = document.getElementById("room-button");
 const roomInput = document.getElementById("room-input");
+const mcdonaldButton = document.getElementById("mcdonald");
 
 // Chat sockets
 
@@ -62,6 +63,10 @@ joinRoomButton.addEventListener("click", () => {
     appendMessage(message);
   });
 });
+
+mcdonaldButton.addEventListener("click",()=>{
+  piano.playOldMacDonald()
+})
 // Chat functions
 function appendMessage(message) {
   const messageElement = document.createElement("div");

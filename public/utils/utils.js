@@ -53,3 +53,29 @@ function pitchToNoteName(pitch, baseOctave) {
     octave: octave,
   };
 }
+
+// Oscillator functions
+
+function noteOn(frequency, velocity, oscillators, context) {
+  const gain = context.createGain(); 
+  const vol = (velocity / 127).toFixed(2);
+
+ 
+  gain.gain.value = vol;
+
+  const osc = context.createOscillator();
+  osc.type = "sawtooth";
+  osc.frequency.value = frequency;
+  osc.connect(gain);
+  gain.connect(context.destination);
+  osc.start(context.currentTime);
+  oscillators[frequency] = osc
+}
+
+function noteOff(frequency, oscillators, context) {
+  if (oscillators[frequency]) {
+    oscillators[frequency].stop(context.currentTime);
+    oscillators[frequency].disconnect();
+    delete oscillators[frequency];
+  }
+}
