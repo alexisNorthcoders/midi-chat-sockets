@@ -49,7 +49,7 @@ class Piano {
         this.pressedKeys.add(keyPress);
         this.playByKeyboard(keyPress);
       }
-    });
+      });
     
     document.addEventListener('keyup', (event) => {
       const keyPress = event.key.toUpperCase();
@@ -57,7 +57,7 @@ class Piano {
         this.pressedKeys.delete(keyPress);
         this.stopByKeyboard(keyPress);
       }
-    });
+      });
      // Individual Piano key's events
     this.pianoKeys.forEach((key) => {
       key.addEventListener("mousedown", () => {
@@ -155,7 +155,6 @@ class Piano {
   playByKeyboard(keyPress) {
     const noteName = this.keyNoteMap.get(keyPress);
     if (!noteName) {
-      console.error(`No note mapped to key '${keyPress}'.`);
       return;
     }
     this.play(noteName);
@@ -163,7 +162,6 @@ class Piano {
   stopByKeyboard(keyPress) {
     const noteName = this.keyNoteMap.get(keyPress);
     if (!noteName) {
-      console.error(`No note mapped to key '${keyPress}'.`);
       return;
     }
     this.stop(noteName);

@@ -13,6 +13,7 @@ const joinRoomButton = document.getElementById("room-button");
 const roomInput = document.getElementById("room-input");
 const mcdonaldButton = document.getElementById("mcdonald");
 const twinkleButton = document.getElementById("twinkle");
+const cChordButton = document.getElementById("C-Chord");
 
 // Chat sockets
 
@@ -69,8 +70,11 @@ mcdonaldButton.addEventListener("click",()=>{
   piano.playMelody(oldMacDonald,240)
 })
 twinkleButton.addEventListener("click",()=>{
- // piano.playMelody(twinkletwinkle,120)
- piano.playChord(["C","E","G"])
+ piano.playMelody(twinkletwinkle,120)
+ 
+})
+cChordButton.addEventListener("click",()=>{
+  piano.playChord(["C","E","G"])
 })
 // Chat functions
 function appendMessage(message) {
