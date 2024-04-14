@@ -19,7 +19,7 @@
 .sharp{
   position:absolute;
   height:30vh;
-  width:6%;
+  width:4%;
 }
 .hover-active{
   transform: scale(0.95);
@@ -40,4 +40,3 @@
     width:6%;
   }
 } */
-

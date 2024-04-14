@@ -20,7 +20,7 @@ class Piano {
 
   }
 
-  playNote({ on, pitch, velocity }) {
+  callOscillator({ on, pitch, velocity }) {
     
     switch (on) {
       case 144:
@@ -65,14 +65,14 @@ class Piano {
         key.classList.add("active");
         const note = key.id;
         const pitch = convertNoteToMIDI(note, this.octave);
-        this.playNote({ on: 144, pitch, velocity: 127 });
+        this.callOscillator({ on: 144, pitch, velocity: 127 });
       });
 
       key.addEventListener("mouseup", () => {
         this.isMouseDown = false;
         const note = key.id;
         const pitch = convertNoteToMIDI(note, this.octave);
-        this.playNote({ on: 128, pitch, velocity: 127 });
+        this.callOscillator({ on: 128, pitch, velocity: 127 });
         key.classList.remove("active");
         key.classList.remove("hover-active");
       });
@@ -82,7 +82,7 @@ class Piano {
         key.classList.remove("hover-active");
         const note = key.id;
         const pitch = convertNoteToMIDI(note, this.octave);
-        this.playNote({ on: 128, pitch, velocity: 127 });
+        this.callOscillator({ on: 128, pitch, velocity: 127 });
       });
 
       key.addEventListener("mouseenter", () => {
@@ -90,7 +90,7 @@ class Piano {
           key.classList.add("hover-active");
           const note = key.id;
           const pitch = convertNoteToMIDI(note, this.octave);
-          this.playNote({ on: 144, pitch, velocity: 127 });
+          this.callOscillator({ on: 144, pitch, velocity: 127 });
         }
       });
 
@@ -100,14 +100,14 @@ class Piano {
         key.classList.add("active");
         const note = key.id;
         const pitch = convertNoteToMIDI(note, this.octave);
-        this.playNote({ on: 144, pitch, velocity: 127 });
+        this.callOscillator({ on: 144, pitch, velocity: 127 });
       });
 
       key.addEventListener("touchend", () => {
         this.isMouseDown = false;
         const note = key.id;
         const pitch = convertNoteToMIDI(note, this.octave);
-        this.playNote({ on: 128, pitch, velocity: 127 });
+        this.callOscillator({ on: 128, pitch, velocity: 127 });
         key.classList.remove("active");
         key.classList.remove("hover-active");
       });
@@ -124,7 +124,7 @@ class Piano {
       return;
     }
     const pitch = convertNoteToMIDI(noteName, octave);
-    this.playNote({ on: 144, pitch, velocity });
+    this.callOscillator({ on: 144, pitch, velocity });
     key.classList.add("active");
   }
   stop(noteName) {
@@ -134,11 +134,10 @@ class Piano {
       return;
     }
     const pitch = convertNoteToMIDI(noteName, this.octave);
-    this.playNote({ on: 128, pitch});
+    this.callOscillator({ on: 128, pitch});
     key.classList.remove("active");
-    console.log("key stopped");
-  }
-  playChord(chord){
+    }
+  playChord(chord,noteDurations){
     for (let i=0; i<chord.length;i++){
       const noteName = chord[i]
       this.play(noteName,80)
@@ -147,7 +146,7 @@ class Piano {
       const noteName = chord[i]
       setTimeout(() => {
         this.stop(noteName);
-      }, 500);
+      }, 800);
     }
    
    

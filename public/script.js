@@ -67,10 +67,10 @@ joinRoomButton.addEventListener("click", () => {
 });
 
 mcdonaldButton.addEventListener("click",()=>{
-  piano.playMelody(oldMacDonald,240)
+  piano.playMelody(oldMacDonald,160)
 })
 twinkleButton.addEventListener("click",()=>{
- piano.playMelody(twinkletwinkle,120)
+ piano.playMelody(twinkletwinkle,160)
  
 })
 cChordButton.addEventListener("click",()=>{
@@ -114,8 +114,10 @@ function onMIDIMessage(message) {
   }
   
 }
+console.log(navigator.requestMIDIAccess)
 if (navigator.requestMIDIAccess) {
-  navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
+  navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure)
+  .catch(err => console.log(err))
 } else {
   console.log("Web MIDI API not supported!");
 }
