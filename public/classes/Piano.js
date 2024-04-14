@@ -17,6 +17,7 @@ class Piano {
       ["K", "C+"],
     ]);
     this.pressedKeys = new Set();
+    this.sequence=[]
 
   }
 
@@ -66,6 +67,7 @@ class Piano {
         const note = key.id;
         const pitch = convertNoteToMIDI(note, this.octave);
         this.callOscillator({ on: 144, pitch, velocity: 127 });
+        this.addNote(note)
       });
 
       key.addEventListener("mouseup", () => {
@@ -195,6 +197,9 @@ class Piano {
     };
   
     playNextNote();
+  }
+  addNote(note){
+    this.sequence.push(note)
   }
 
 }

@@ -7,13 +7,10 @@ const piano = new Piano();
 
 // DOM elements
 const messageContainer = document.getElementById("message-container");
-const messageForm = document.getElementById("form");
-const messageInput = document.getElementById("message-input");
-const joinRoomButton = document.getElementById("room-button");
-const roomInput = document.getElementById("room-input");
 const mcdonaldButton = document.getElementById("mcdonald");
 const twinkleButton = document.getElementById("twinkle");
 const cChordButton = document.getElementById("C-Chord");
+const startButton = document.getElementById("start");
 
 // Chat sockets
 
@@ -42,29 +39,8 @@ socket.on("user-disconnected", (name) => {
   appendMessage(`${name} disconnected`);
 });
 
-// MIDI sockets
-socket.on("midiMessage", ({ on, pitch, velocity }) => {
-  piano.playNote({ on, pitch, velocity });
-});
 
 // Event Listeners
-
-messageForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const message = messageInput.value;
-  const room = roomInput.value || null;
-
-  if (message === "") return;
-  appendMessage(`You: ${message}`);
-  socket.emit("send-chat-message", { message }, room);
-  messageInput.value = "";
-});
-joinRoomButton.addEventListener("click", () => {
-  const room = roomInput.value;
-  socket.emit("join-room", room, (message) => {
-    appendMessage(message);
-  });
-});
 
 mcdonaldButton.addEventListener("click",()=>{
   piano.playMelody(oldMacDonald,160)
@@ -76,6 +52,27 @@ twinkleButton.addEventListener("click",()=>{
 cChordButton.addEventListener("click",()=>{
   piano.playChord(["C","E","G"])
 })
+// Notes Sequences
+
+function startTimer() {
+  piano.sequence = []
+ appendMessage("Start playing...")
+      
+      setTimeout(() => {
+          
+          socket.emit('send-sequence', piano.sequence);
+          appendMessage("Sending...")
+          piano.sequence = []; 
+      }, 5000);
+      
+  
+}
+
+startButton.addEventListener("click",()=>{
+  console.log("sending sequence")
+  startTimer()
+})
+
 // Chat functions
 function appendMessage(message) {
   const messageElement = document.createElement("div");
@@ -110,14 +107,14 @@ function onMIDIMessage(message) {
     }
   }
   else {
-    piano.playNote({on,pitch,velocity})
+    piano.callOscillator({on,pitch,velocity})
   }
   
 }
 console.log(navigator.requestMIDIAccess)
 if (navigator.requestMIDIAccess) {
   navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure)
-  .catch(err => console.log(err))
+ 
 } else {
   console.log("Web MIDI API not supported!");
 }

@@ -51,16 +51,11 @@ io.on("connection", (socket) => {
     callback("Joined " + room);
     console.log(socket.id + " joined room " + room);
   });
-  socket.on("send-chat-message", ({message}, room) => {
+  socket.on("send-sequence", (data) => {
+    console.log(data)
     const name = userMap.get(socket.id);
+    console.log(name)
     
-    if (!room) {
-        
-        socket.broadcast.emit("chat-message", { name, message });
-      
-    } else {
-      socket.to(room).emit("chat-message", { name, message });
-    }
   });
   socket.on("midiMessage", (data) => {
     
