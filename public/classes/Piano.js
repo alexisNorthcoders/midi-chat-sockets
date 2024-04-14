@@ -154,7 +154,7 @@ class Piano {
     }
     this.stop(noteName);
   }
-  playOldMacDonald(tempo=160, interNoteDuration = 'eighth') {
+  playOldMacDonald(musicsheet,tempo=160, interNoteDuration = 'eighth') {
     const noteDurations = {
       whole: 4,
       half: 2,
@@ -162,22 +162,6 @@ class Piano {
       eighth: 0.5,
       sixteenth: 0.25
     };
-  
-    const musicsheet = [
-      { note: 'F', duration: 'quarter' },
-      { note: 'F', duration: 'quarter' },
-      { note: 'F', duration: 'quarter' },
-      { note: 'C', duration: 'quarter' },
-      { note: 'D', duration: 'quarter' },
-      { note: 'D', duration: 'quarter' },
-      { note: 'C', duration: 'half' },
-      { note: 'A', duration: 'quarter' },
-      { note: 'A', duration: 'quarter' },
-      { note: 'G', duration: 'quarter' },
-      { note: 'G', duration: 'quarter' },
-      { note: 'F', duration: 'half' },
-     
-    ];
   
     const millisecondsPerBeat = 60000 / tempo;
     const interNoteDurationMilliseconds = millisecondsPerBeat * noteDurations[interNoteDuration];

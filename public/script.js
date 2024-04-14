@@ -65,7 +65,7 @@ joinRoomButton.addEventListener("click", () => {
 });
 
 mcdonaldButton.addEventListener("click",()=>{
-  piano.playOldMacDonald()
+  piano.playOldMacDonald(oldMacDonald,240)
 })
 // Chat functions
 function appendMessage(message) {
