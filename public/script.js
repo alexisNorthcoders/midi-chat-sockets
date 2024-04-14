@@ -12,6 +12,7 @@ const messageInput = document.getElementById("message-input");
 const joinRoomButton = document.getElementById("room-button");
 const roomInput = document.getElementById("room-input");
 const mcdonaldButton = document.getElementById("mcdonald");
+const twinkleButton = document.getElementById("twinkle");
 
 // Chat sockets
 
@@ -66,6 +67,9 @@ joinRoomButton.addEventListener("click", () => {
 
 mcdonaldButton.addEventListener("click",()=>{
   piano.playMelody(oldMacDonald,240)
+})
+twinkleButton.addEventListener("click",()=>{
+  piano.playMelody(twinkletwinkle,120)
 })
 // Chat functions
 function appendMessage(message) {
