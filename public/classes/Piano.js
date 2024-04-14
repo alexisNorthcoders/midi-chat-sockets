@@ -138,6 +138,20 @@ class Piano {
     key.classList.remove("active");
     console.log("key stopped");
   }
+  playChord(chord){
+    for (let i=0; i<chord.length;i++){
+      const noteName = chord[i]
+      this.play(noteName,80)
+    }
+    for (let i=0; i<chord.length;i++){
+      const noteName = chord[i]
+      setTimeout(() => {
+        this.stop(noteName);
+      }, 500);
+    }
+   
+   
+  }
   playByKeyboard(keyPress) {
     const noteName = this.keyNoteMap.get(keyPress);
     if (!noteName) {

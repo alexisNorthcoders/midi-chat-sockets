@@ -69,7 +69,8 @@ mcdonaldButton.addEventListener("click",()=>{
   piano.playMelody(oldMacDonald,240)
 })
 twinkleButton.addEventListener("click",()=>{
-  piano.playMelody(twinkletwinkle,120)
+ // piano.playMelody(twinkletwinkle,120)
+ piano.playChord(["C","E","G"])
 })
 // Chat functions
 function appendMessage(message) {
