@@ -4,9 +4,23 @@ const socketIo = require("socket.io");
 const cors = require("cors");
 const { instrument } = require("@socket.io/admin-ui");
 const path = require("path");
-
+const dotenv = require('dotenv').config()
 const app = express();
 const server = http.createServer(app);
+const {OpenAI} = require('openai')
+const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY})
+
+async function sendSequence(sequence,name) {
+  const completion = await openai.chat.completions.create({
+    messages: [{"role": "system", "content": "You are a music teacher for a child. I will send a expected sequence of notes and the child's sequences of notes. Your job is to evaluate if he made a good job or not."},
+        {"role": "user", "content": `This is the expected sequence: [ C,D,E]. Child sequence:${sequence}. Child name:${name} `},
+       ],
+    model: "gpt-3.5-turbo",
+  });
+
+  console.log(completion.choices[0]);
+}
+
 
 const whitelist = [
   "http://192.168.4.29:3000",
@@ -55,6 +69,7 @@ io.on("connection", (socket) => {
     console.log(data)
     const name = userMap.get(socket.id);
     console.log(name)
+    sendSequence(data,name)
     
   });
   socket.on("midiMessage", (data) => {
