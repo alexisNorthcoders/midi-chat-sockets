@@ -46,7 +46,7 @@ mcdonaldButton.addEventListener("click",()=>{
   piano.playMelody(oldMacDonald,160)
 })
 twinkleButton.addEventListener("click",()=>{
- piano.playMelody(twinkletwinkle,160)
+ piano.playMelody(wheelsbus,160)
  
 })
 cChordButton.addEventListener("click",()=>{

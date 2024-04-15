@@ -60,11 +60,7 @@ io.on("connection", (socket) => {
     userMap.set(socket.id, name);
     console.log(`User ${name} with ID ${socket.id} connected.`);
   });
-  socket.on("join-room", (room, callback) => {
-    socket.join(room);
-    callback("Joined " + room);
-    console.log(socket.id + " joined room " + room);
-  });
+
   socket.on("send-sequence", (data) => {
     console.log(data)
     const name = userMap.get(socket.id);

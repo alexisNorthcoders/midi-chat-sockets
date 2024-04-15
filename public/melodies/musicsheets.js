@@ -58,3 +58,33 @@ const twinkletwinkle=[
 
     
   ]
+  const wheelsbus =[
+    {note:"C",duration:"quarter"},
+    {note:"F",duration:"quarter"},
+    {note:"F",duration:"eighth"},
+    {note:"F",duration:"eighth"},
+    {note:"F",duration:"eighth"},
+    {note:"A",duration:"quarter"},
+    {note:"C+",duration:"half"},
+    {note:"A",duration:"quarter"},
+    {note:"F",duration:"quarter"},
+    {note:"G",duration:"half"},
+    {note:"E",duration:"quarter"},
+    {note:"C",duration:"quarter"},
+    {note:"C+",duration:"half"},
+    {note:"A",duration:"quarter"},
+    {note:"F",duration:"quarter"},
+    {note:"C",duration:"quarter"},
+    {note:"F",duration:"quarter"},
+    {note:"F",duration:"eighth"},
+    {note:"F",duration:"eighth"},
+    {note:"F",duration:"eighth"},
+    {note:"A",duration:"quarter"},
+    {note:"C+",duration:"quarter"},
+    {note:"A",duration:"quarter"},
+    {note:"F",duration:"quarter"},
+    {note:"G",duration:"quarter"},
+    {note:"C",duration:"quarter"},
+    {note:"C",duration:"quarter"},
+    {note:"F",duration:"quarter"},
+  ]
