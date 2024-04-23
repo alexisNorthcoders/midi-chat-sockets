@@ -1,6 +1,6 @@
 import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
 
-const socket = io("wss://midi-chat-sockets-1.onrender.com/socket.io");
+const socket = io("wss://midi-chat-sockets-1.onrender.com/");
 
 // Initialize piano
 const piano = new Piano();
