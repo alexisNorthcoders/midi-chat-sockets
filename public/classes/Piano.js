@@ -17,12 +17,11 @@ class Piano {
       ["K", "C+"],
     ]);
     this.pressedKeys = new Set();
-    this.sequence=[]
-
+    this.sequence = [];
+    this.melodyDiv = null
   }
 
   callOscillator({ on, pitch, velocity }) {
-    
     switch (on) {
       case 144:
         noteOn(frequency(pitch), velocity, this.oscillators, this.context);
@@ -31,10 +30,9 @@ class Piano {
         noteOff(frequency(pitch), this.oscillators, this.context);
         break;
     }
-}
+  }
 
   #setupEventListeners() {
-
     //Global mouse events
     document.addEventListener("mousedown", () => {
       this.isMouseDown = true;
@@ -44,22 +42,22 @@ class Piano {
       this.isMouseDown = false;
     });
     // Keyboard events
-    document.addEventListener('keydown', (event) => {
+    document.addEventListener("keydown", (event) => {
       const keyPress = event.key.toUpperCase();
       if (!this.pressedKeys.has(keyPress)) {
         this.pressedKeys.add(keyPress);
         this.playByKeyboard(keyPress);
       }
-      });
-    
-    document.addEventListener('keyup', (event) => {
+    });
+
+    document.addEventListener("keyup", (event) => {
       const keyPress = event.key.toUpperCase();
       if (this.pressedKeys.has(keyPress)) {
         this.pressedKeys.delete(keyPress);
         this.stopByKeyboard(keyPress);
       }
-      });
-     // Individual Piano key's events
+    });
+    // Individual Piano key's events
     this.pianoKeys.forEach((key) => {
       key.addEventListener("mousedown", () => {
         this.isMouseDown = true;
@@ -67,7 +65,7 @@ class Piano {
         const note = key.id;
         const pitch = convertNoteToMIDI(note, this.octave);
         this.callOscillator({ on: 144, pitch, velocity: 127 });
-        this.addNote(note)
+        this.addNote(note);
       });
 
       key.addEventListener("mouseup", () => {
@@ -119,7 +117,7 @@ class Piano {
       });
     });
   }
-  play(noteName,velocity=127,octave=this.octave) {
+  play(noteName, velocity = 127, octave = this.octave) {
     const key = document.getElementById(noteName);
     if (!key) {
       console.error(`Key with id '${noteName}' not found.`);
@@ -136,22 +134,20 @@ class Piano {
       return;
     }
     const pitch = convertNoteToMIDI(noteName, this.octave);
-    this.callOscillator({ on: 128, pitch});
+    this.callOscillator({ on: 128, pitch });
     key.classList.remove("active");
+  }
+  playChord(chord, noteDurations) {
+    for (let i = 0; i < chord.length; i++) {
+      const noteName = chord[i];
+      this.play(noteName, 80);
     }
-  playChord(chord,noteDurations){
-    for (let i=0; i<chord.length;i++){
-      const noteName = chord[i]
-      this.play(noteName,80)
-    }
-    for (let i=0; i<chord.length;i++){
-      const noteName = chord[i]
+    for (let i = 0; i < chord.length; i++) {
+      const noteName = chord[i];
       setTimeout(() => {
         this.stop(noteName);
       }, 800);
     }
-   
-   
   }
   playByKeyboard(keyPress) {
     const noteName = this.keyNoteMap.get(keyPress);
@@ -167,39 +163,53 @@ class Piano {
     }
     this.stop(noteName);
   }
-  playMelody(musicsheet,tempo=160, interNoteDuration = 'eighth') {
+  playMelody(musicsheet, tempo = 160, interNoteDuration = "eighth") {
+    this.melodyDiv = document.createElement("div");
     const noteDurations = {
       whole: 4,
       half: 2,
       quarter: 1,
       eighth: 0.5,
-      sixteenth: 0.25
+      sixteenth: 0.25,
     };
-  
+
     const millisecondsPerBeat = 60000 / tempo;
-    const interNoteDurationMilliseconds = millisecondsPerBeat * noteDurations[interNoteDuration];
+    const interNoteDurationMilliseconds =
+      millisecondsPerBeat * noteDurations[interNoteDuration];
     let index = 0;
-  
+
     const playNote = (noteName, duration) => {
+      this.appendMessage(noteName);
       this.play(noteName);
       setTimeout(() => {
         this.stop(noteName);
       }, duration * millisecondsPerBeat);
     };
-  
+
     const playNextNote = () => {
       const { note, duration } = musicsheet[index];
       if (note) {
         playNote(note, noteDurations[duration]);
         index++;
-        setTimeout(playNextNote, noteDurations[duration] * millisecondsPerBeat + interNoteDurationMilliseconds);
+        setTimeout(
+          playNextNote,
+          noteDurations[duration] * millisecondsPerBeat +
+            interNoteDurationMilliseconds
+        );
       }
     };
-  
+
     playNextNote();
   }
-  addNote(note){
-    this.sequence.push(note)
+  addNote(note) {
+    this.sequence.push(note);
   }
+  appendMessage(message) {
+    const messageContainer = document.getElementById("message-container");
+    
+      messageContainer.appendChild(this.melodyDiv);
+    
 
+      this.melodyDiv.innerText += ` ${message} `;
+  }
 }

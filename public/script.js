@@ -61,7 +61,7 @@ function startTimer() {
     socket.emit("send-sequence", {sequence:piano.sequence, melody:oldMacDonaldNotes},);
     appendMessage("Sending...");
     piano.sequence = [];
-  }, 5000);
+  }, 1000);
 }
 
 startButton.addEventListener("click", () => {
