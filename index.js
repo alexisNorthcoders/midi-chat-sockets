@@ -27,6 +27,8 @@ const whitelist = [
   "http://127.0.0.1:3000",
   "http://localhost:3000",
   "https://admin.socket.io",
+  "https://midi-chat-sockets-1.onrender.com/"
+  
 ];
 const corsOptions = {
   origin: (origin, callback) => {
