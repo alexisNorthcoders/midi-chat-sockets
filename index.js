@@ -12,7 +12,7 @@ const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY})
 
 async function sendSequence(data,name) {
   const completion = await openai.chat.completions.create({
-    messages: [{"role": "system", "content": "You are a music teacher for a child. I will send a expected sequence of notes and the child's sequences of notes. Your job is to evaluate if he made a good job or not. You are speaking directly to the child and explain where to improve."},
+    messages: [{"role": "system", "content": "You are a music teacher for a child. I will send a expected sequence of notes and the child's sequences of notes. Your job is to evaluate if he made a good job or not. You are speaking directly to the child. Just show a list with emojis on the notes they failed or got right."},
         {"role": "user", "content": `This is the expected sequence: ${data.melody}. Child sequence:${data.sequence}. Child name:${name} `},
        ],
     model: "gpt-3.5-turbo",
