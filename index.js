@@ -10,20 +10,20 @@ const server = http.createServer(app);
 const {OpenAI} = require('openai')
 const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY})
 
-async function sendSequence(sequence,name) {
+async function sendSequence(data,name) {
   const completion = await openai.chat.completions.create({
-    messages: [{"role": "system", "content": "You are a music teacher for a child. I will send a expected sequence of notes and the child's sequences of notes. Your job is to evaluate if he made a good job or not."},
-        {"role": "user", "content": `This is the expected sequence: [ C,D,E]. Child sequence:${sequence}. Child name:${name} `},
+    messages: [{"role": "system", "content": "You are a music teacher for a child. I will send a expected sequence of notes and the child's sequences of notes. Your job is to evaluate if he made a good job or not. You are speaking directly to the child and explain where to improve."},
+        {"role": "user", "content": `This is the expected sequence: ${data.melody}. Child sequence:${data.sequence}. Child name:${name} `},
        ],
     model: "gpt-3.5-turbo",
   });
-
-  console.log(completion.choices[0]);
+ 
+ return completion.choices[0].message.content
 }
 
 
 const whitelist = [
-  "http://192.168.4.29:3000",
+  "http://192.168.4.144:3000",
   "http://127.0.0.1:3000",
   "http://localhost:3000",
   "https://admin.socket.io",
@@ -61,11 +61,12 @@ io.on("connection", (socket) => {
     console.log(`User ${name} with ID ${socket.id} connected.`);
   });
 
-  socket.on("send-sequence", (data) => {
+  socket.on("send-sequence", async (data) => {
     console.log(data)
     const name = userMap.get(socket.id);
     console.log(name)
-    sendSequence(data,name)
+    const message = await sendSequence(data,name)
+    socket.emit("chat-message",{name:"AI",message})
     
   });
   socket.on("midiMessage", (data) => {

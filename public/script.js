@@ -1,6 +1,6 @@
 import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
 
-const socket = io("http://192.168.4.29:3000");
+const socket = io("http://192.168.4.144:3000");
 
 // Initialize piano
 const piano = new Piano();
@@ -39,39 +39,35 @@ socket.on("user-disconnected", (name) => {
   appendMessage(`${name} disconnected`);
 });
 
-
 // Event Listeners
 
-mcdonaldButton.addEventListener("click",()=>{
-  piano.playMelody(oldMacDonald,160)
-})
-twinkleButton.addEventListener("click",()=>{
- piano.playMelody(wheelsbus,160)
- 
-})
-cChordButton.addEventListener("click",()=>{
-  piano.playChord(["C","E","G"])
-})
+mcdonaldButton.addEventListener("click", () => {
+  piano.playMelody(oldMacDonald, 160);
+});
+twinkleButton.addEventListener("click", () => {
+  piano.playMelody(wheelsbus, 160);
+});
+cChordButton.addEventListener("click", () => {
+  piano.playChord(["C", "E", "G"]);
+});
 // Notes Sequences
 
 function startTimer() {
-  piano.sequence = []
- appendMessage("Start playing...")
-      
-      setTimeout(() => {
-          
-          socket.emit('send-sequence', piano.sequence);
-          appendMessage("Sending...")
-          piano.sequence = []; 
-      }, 5000);
-      
-  
+  piano.sequence = [];
+  const oldMacDonaldNotes = oldMacDonald.map((element)=> element.note)
+  appendMessage("Start playing...");
+
+  setTimeout(() => {
+    socket.emit("send-sequence", {sequence:piano.sequence, melody:oldMacDonaldNotes},);
+    appendMessage("Sending...");
+    piano.sequence = [];
+  }, 5000);
 }
 
-startButton.addEventListener("click",()=>{
-  console.log("sending sequence")
-  startTimer()
-})
+startButton.addEventListener("click", () => {
+  console.log("sending sequence");
+  startTimer();
+});
 
 // Chat functions
 function appendMessage(message) {
@@ -93,28 +89,25 @@ function onMIDIFailure(msg) {
 
 function onMIDIMessage(message) {
   const [on, pitch, velocity] = message.data;
-  console.log(velocity)
+  console.log(velocity);
   let { note, octave } = pitchToNoteName(pitch, piano.octave);
-  if (note === "C" && octave === piano.octave +1){
-    note = "C+"
+  if (note === "C" && octave === piano.octave + 1) {
+    note = "C+";
   }
   socket.emit("midiMessage", { on, pitch, velocity });
-  if (octave === piano.octave || note === "C+"){
+  if (octave === piano.octave || note === "C+") {
     if (on === 144) {
-      piano.play(note,velocity);
+      piano.play(note, velocity);
     } else if (on === 128) {
       piano.stop(note);
     }
+  } else {
+    piano.callOscillator({ on, pitch, velocity });
   }
-  else {
-    piano.callOscillator({on,pitch,velocity})
-  }
-  
 }
-console.log(navigator.requestMIDIAccess)
+console.log(navigator.requestMIDIAccess);
 if (navigator.requestMIDIAccess) {
-  navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure)
- 
+  navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
 } else {
   console.log("Web MIDI API not supported!");
 }
