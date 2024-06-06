@@ -36,7 +36,7 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors());
-app.use(express.static(path.join(__dirname, "public")));
+
 
 const userMap = new Map();
 const io = socketIo(server, {
@@ -77,6 +77,8 @@ io.on("connection", (socket) => {
 });
 
 instrument(io, { auth: false });
+
+app.use("/midi",express.static(path.join(__dirname, '/public')));
 
 server.listen(3000, () => {
   console.log("Express and Socket.io server listening on port 3000");
