@@ -10,7 +10,18 @@ const messageContainer = document.getElementById("message-container");
 const mcdonaldButton = document.getElementById("mcdonald");
 const twinkleButton = document.getElementById("twinkle");
 const cChordButton = document.getElementById("C-Chord");
-const startButton = document.getElementById("start");
+const cMinorChordButton = document.getElementById("CMinor-Chord");
+const dChordButton = document.getElementById("D-Chord");
+const wheelsButton = document.getElementById("wheels");
+const marylambButton = document.getElementById("marylamb");
+const chopsticksButton = document.getElementById("chopsticks");
+const jingleBellsButton = document.getElementById("jingleBells");
+const cradleSongButton = document.getElementById("cradleSong");
+const itsyBitsySpiderButton = document.getElementById("itsyBitsySpider");
+const ringAroundTheRosesButton = document.getElementById("ringAroundTheRoses");
+
+const increaseButton = document.getElementById("increaseOctave");
+const decreaseButton = document.getElementById("decreaseOctave");
 
 // Chat sockets
 
@@ -50,6 +61,40 @@ twinkleButton.addEventListener("click", () => {
 cChordButton.addEventListener("click", () => {
   piano.playChord(["C", "E", "G"]);
 });
+cMinorChordButton.addEventListener("click", () => {
+  piano.playChord(["C", "D#", "G"]);
+});
+dChordButton.addEventListener("click", () => {
+  piano.playChord(["D", "F#", "A"]);
+});
+wheelsButton.addEventListener("click", () => {
+  piano.playMelody(wheelsbus, 160);
+});
+marylambButton.addEventListener("click", () => {
+  piano.playMelody(maryHadALittleLamb, 160);
+});
+chopsticksButton.addEventListener("click", () => {
+  piano.playMelody(chopsticks, 160);
+});
+jingleBellsButton.addEventListener("click", () => {
+  piano.playMelody(jingleBells, 160);
+});
+itsyBitsySpiderButton.addEventListener("click", () => {
+  piano.playMelody(itsyBitsySpider, 160);
+});
+ringAroundTheRosesButton.addEventListener("click", () => {
+  piano.playMelody(ringAroundTheRoses, 160);
+});
+cradleSongButton.addEventListener("click", () => {
+  piano.playMelody(cradleSong, 160);
+});
+
+increaseButton.addEventListener("click", () => {
+  piano.increaseOctave();
+});
+decreaseButton.addEventListener("click", () => {
+  piano.decreaseOctave();
+});
 // Notes Sequences
 
 function startTimer() {
@@ -64,10 +109,6 @@ function startTimer() {
   }, 5000);
 }
 
-startButton.addEventListener("click", () => {
-  console.log("sending sequence");
-  startTimer();
-});
 
 // Chat functions
 function appendMessage(message) {

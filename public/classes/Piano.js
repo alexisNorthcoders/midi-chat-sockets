@@ -20,6 +20,12 @@ class Piano {
     this.sequence = [];
     this.melodyDiv = null
   }
+  increaseOctave(){
+    this.octave++
+  }
+  decreaseOctave(){
+    this.octave--
+  }
 
   callOscillator({ on, pitch, velocity }) {
     switch (on) {
