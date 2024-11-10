@@ -22,6 +22,7 @@ const ringAroundTheRosesButton = document.getElementById("ringAroundTheRoses");
 
 const increaseButton = document.getElementById("increaseOctave");
 const decreaseButton = document.getElementById("decreaseOctave");
+const typeButton = document.getElementById("type");
 
 // Chat sockets
 
@@ -94,6 +95,9 @@ increaseButton.addEventListener("click", () => {
 });
 decreaseButton.addEventListener("click", () => {
   piano.decreaseOctave();
+});
+typeButton.addEventListener("click", () => {
+  piano.nextOscillatorType();
 });
 // Notes Sequences
 

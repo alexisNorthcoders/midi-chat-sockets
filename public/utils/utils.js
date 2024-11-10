@@ -56,7 +56,7 @@ function pitchToNoteName(pitch, baseOctave) {
 
 // Oscillator functions
 
-function noteOn(frequency, velocity, oscillators, context) {
+function noteOn(frequency, velocity, oscillators, context, type) {
   const gain = context.createGain(); 
   const vol = (velocity / 127).toFixed(2);
 
@@ -64,7 +64,7 @@ function noteOn(frequency, velocity, oscillators, context) {
   gain.gain.value = vol;
 
   const osc = context.createOscillator();
-  osc.type = "sawtooth";
+  osc.type = type;
   osc.frequency.value = frequency;
   osc.connect(gain);
   gain.connect(context.destination);

@@ -2,6 +2,7 @@ class Piano {
   constructor(octave = 4) {
     this.context = new AudioContext();
     this.oscillators = {};
+    this.ocillatorType = 'sawtooth'
     this.isMouseDown = false;
     this.octave = octave;
     this.pianoKeys = document.querySelectorAll(".piano-key");
@@ -20,22 +21,28 @@ class Piano {
     this.sequence = [];
     this.melodyDiv = null
   }
-  increaseOctave(){
+  increaseOctave() {
     this.octave++
   }
-  decreaseOctave(){
+  decreaseOctave() {
     this.octave--
   }
 
   callOscillator({ on, pitch, velocity }) {
     switch (on) {
       case 144:
-        noteOn(frequency(pitch), velocity, this.oscillators, this.context);
+        noteOn(frequency(pitch), velocity, this.oscillators, this.context, this.ocillatorType);
         break;
       case 128:
         noteOff(frequency(pitch), this.oscillators, this.context);
         break;
     }
+  }
+  nextOscillatorType() {
+    const types = ['sawtooth', 'square','sine','triangle']
+    const index = types.findIndex((type)=> type === this.ocillatorType)
+    this.ocillatorType = types[(index + 1) % types.length]
+    console.log(this.ocillatorType)
   }
 
   #setupEventListeners() {
@@ -200,7 +207,7 @@ class Piano {
         setTimeout(
           playNextNote,
           noteDurations[duration] * millisecondsPerBeat +
-            interNoteDurationMilliseconds
+          interNoteDurationMilliseconds
         );
       }
     };
@@ -212,10 +219,10 @@ class Piano {
   }
   appendMessage(message) {
     const messageContainer = document.getElementById("message-container");
-    
-      messageContainer.appendChild(this.melodyDiv);
-    
 
-      this.melodyDiv.innerText += ` ${message} `;
+    messageContainer.appendChild(this.melodyDiv);
+
+
+    this.melodyDiv.innerText += ` ${message} `;
   }
 }
